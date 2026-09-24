@@ -59,3 +59,13 @@ export interface DeleteTaskDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
+
+export interface TaskBoardProps {
+  tasks: Task[];
+}
+
+export interface DateRangeFilterProps {
+  from?: Date;
+  to?: Date;
+  onChange: (range: { from?: Date; to?: Date }) => void;
+}

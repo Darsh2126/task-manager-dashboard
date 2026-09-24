@@ -8,9 +8,10 @@ import {
 import { useTaskStore } from "@/store/task/task-store";
 import { TaskStatus } from "@/lib/enums/tasks";
 import TaskColumn from "@/features/tasks/task-column";
+import { TaskBoardProps } from "@/types/tasks";
 
-const TaskBoard = () => {
-  const tasks = useTaskStore((state) => state.tasks);
+const TaskBoard = ({ tasks }: TaskBoardProps) => {
+
   const reorderTasks = useTaskStore((state) => state.reorderTasks);
   const moveTaskToColumn = useTaskStore((state) => state.moveTaskToColumn);
 

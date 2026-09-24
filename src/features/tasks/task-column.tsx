@@ -14,10 +14,6 @@ const TaskColumn = ({ title, tasks }: TaskColumnProps) => {
     id: title,
   });
 
-  const sortedTasks = [...tasks].sort(
-    (first, second) => first.position - second.position,
-  );
-
   return (
     <section className="flex min-w-0 flex-1 flex-col gap-3 rounded-xl bg-muted/40 p-4">
       <div className="flex items-center justify-between">
@@ -25,7 +21,7 @@ const TaskColumn = ({ title, tasks }: TaskColumnProps) => {
         <span className="text-xs text-muted-foreground">{tasks.length}</span>
       </div>
       <SortableContext
-        items={sortedTasks.map((task) => task.id)}
+        items={tasks.map((task) => task.id)}
         strategy={verticalListSortingStrategy}
       >
         <div
@@ -35,10 +31,10 @@ const TaskColumn = ({ title, tasks }: TaskColumnProps) => {
               : "min-h-[160px] border-transparent"
             }`}
         >
-          {sortedTasks.map((task) => (
+          {tasks.map((task) => (
             <TaskCard key={task.id} task={task} />
           ))}
-          {sortedTasks.length === 0 && <TaskEmptyState />}
+          {tasks.length === 0 && <TaskEmptyState />}
         </div>
       </SortableContext>
     </section>
