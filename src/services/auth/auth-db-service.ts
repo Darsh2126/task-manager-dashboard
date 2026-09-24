@@ -1,8 +1,13 @@
-import { DB_NAME, DB_VERSION, SESSION_STORE, USERS_STORE } from "@/lib/constants/auth-constants";
+import {
+  DB_NAME,
+  DB_VERSION,
+  SESSION_STORE,
+  USERS_STORE,
+} from "@/lib/constants/auth-constants";
 import { Session, User } from "@/types/auth";
 
 const openDatabase = (): Promise<IDBDatabase> => {
-return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
 
     request.onupgradeneeded = () => {
@@ -33,9 +38,9 @@ return new Promise((resolve, reject) => {
       reject(request.error);
     };
   });
-}
+};
 
-export const createUser = async(user: User): Promise<void> => {
+export const createUser = async (user: User): Promise<void> => {
   const db = await openDatabase();
 
   return new Promise((resolve, reject) => {
@@ -45,11 +50,12 @@ export const createUser = async(user: User): Promise<void> => {
 
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
+  });
+};
 
-  })
-}
-
-export const getUserByEmail = async(email: string): Promise<User | undefined> => {
+export const getUserByEmail = async (
+  email: string,
+): Promise<User | undefined> => {
   const db = await openDatabase();
 
   return new Promise((resolve, reject) => {
@@ -65,9 +71,9 @@ export const getUserByEmail = async(email: string): Promise<User | undefined> =>
       reject(request.error);
     };
   });
-}
+};
 
-export const saveSession = async(session: Session): Promise<void> => {
+export const saveSession = async (session: Session): Promise<void> => {
   const db = await openDatabase();
 
   return new Promise((resolve, reject) => {
@@ -81,9 +87,9 @@ export const saveSession = async(session: Session): Promise<void> => {
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
   });
-}
+};
 
-export const getSession = async(): Promise<Session | undefined> => {
+export const getSession = async (): Promise<Session | undefined> => {
   const db = await openDatabase();
 
   return new Promise((resolve, reject) => {
@@ -98,9 +104,9 @@ export const getSession = async(): Promise<Session | undefined> => {
       reject(request.error);
     };
   });
-}
+};
 
-export const clearSession = async(): Promise<void> => {
+export const clearSession = async (): Promise<void> => {
   const db = await openDatabase();
 
   return new Promise((resolve, reject) => {
@@ -111,5 +117,23 @@ export const clearSession = async(): Promise<void> => {
     request.onsuccess = () => resolve();
     request.onerror = () => reject(request.error);
   });
+};
 
-}
+export const getUserById = async (
+  userId: string,
+): Promise<User | undefined> => {
+  const db = await openDatabase();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(USERS_STORE, "readonly");
+    const store = transaction.objectStore(USERS_STORE);
+    const request = store.get(userId);
+
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
+    request.onerror = () => {
+      reject(request.error);
+    };
+  });
+};

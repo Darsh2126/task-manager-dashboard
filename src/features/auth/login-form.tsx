@@ -4,16 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import {
-  Field,
-  FieldError,
-  FieldLabel,
-} from "@/components/ui/field";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  loginSchema,
-  type LoginFormData,
-} from "@/schemas/login-schema";
+import { loginSchema, type LoginFormData } from "@/schemas/login-schema";
 import { useAuthStore } from "@/store/auth/auth-store";
 
 const LoginForm = () => {
@@ -44,27 +37,20 @@ const LoginForm = () => {
     <main className="flex min-h-screen items-center justify-center px-4">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-semibold">
-            Welcome back
-          </h1>
+          <h1 className="text-3xl font-semibold">Welcome back</h1>
 
           <p className="mt-2 text-sm text-muted-foreground">
             Log in to manage your tasks
           </p>
         </div>
 
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-5"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
           <Controller
             name="email"
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="login-email">
-                  Email
-                </FieldLabel>
+                <FieldLabel htmlFor="login-email">Email</FieldLabel>
 
                 <Input
                   {...field}
@@ -86,9 +72,7 @@ const LoginForm = () => {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="login-password">
-                  Password
-                </FieldLabel>
+                <FieldLabel htmlFor="login-password">Password</FieldLabel>
 
                 <Input
                   {...field}
@@ -110,24 +94,19 @@ const LoginForm = () => {
             disabled={form.formState.isSubmitting}
             className="w-full rounded-md bg-black px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
           >
-            {form.formState.isSubmitting
-              ? "Logging in..."
-              : "Log in"}
+            {form.formState.isSubmitting ? "Logging in..." : "Log in"}
           </button>
         </form>
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Don't have an account?{" "}
-          <a
-            href="/sign-up"
-            className="font-medium text-foreground"
-          >
+          <a href="/sign-up" className="font-medium text-foreground">
             Sign up
           </a>
         </p>
       </div>
     </main>
   );
-}
+};
 
-export default LoginForm
+export default LoginForm;

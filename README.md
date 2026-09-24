@@ -9,20 +9,20 @@ and drop.
 
 ## Tech Stack
 
--   Next.js
--   React
--   TypeScript
--   Tailwind CSS
--   shadcn/ui
--   Zustand
--   React Hook Form
--   Zod
--   IndexedDB
--   dnd-kit
--   Jest
--   React Testing Library
--   ESLint
--   Prettier
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Zustand
+- React Hook Form
+- Zod
+- IndexedDB
+- dnd-kit
+- Jest
+- React Testing Library
+- ESLint
+- Prettier
 
 ## Project Structure
 
@@ -34,7 +34,7 @@ and is not treated as a fixed final structure.
 
 ### Current Structure
 
-``` text
+```text
 src/
 ├── app/
 │   ├── (auth)/
@@ -70,15 +70,15 @@ Will provide the final structure once it fully generated.
 
 ### Folder Responsibilities
 
--   `app/` --- application routes and page composition
--   `components/` --- shared UI and layout components
--   `features/` --- feature-specific components and behaviour
--   `store/` --- global application state
--   `hooks/` --- reusable React hooks
--   `schemas/` --- form and input validation
--   `types/` --- shared TypeScript types
--   `lib/` --- shared utilities and application helpers
--   `services/` --- persistence and API-related operations
+- `app/` --- application routes and page composition
+- `components/` --- shared UI and layout components
+- `features/` --- feature-specific components and behaviour
+- `store/` --- global application state
+- `hooks/` --- reusable React hooks
+- `schemas/` --- form and input validation
+- `types/` --- shared TypeScript types
+- `lib/` --- shared utilities and application helpers
+- `services/` --- persistence and API-related operations
 
 The project uses feature-oriented components with separate state and
 service responsibilities.
@@ -89,7 +89,7 @@ The application uses feature-oriented components.
 
 For example:
 
-``` text
+```text
 features/
 ├── auth/
 │   ├── login-form
@@ -103,18 +103,17 @@ features/
     └── task-toolbar
 ```
 
-
 ## Running Locally
 
 Install dependencies:
 
-``` bash
+```bash
 pnpm install
 ```
 
 Run the development server:
 
-``` bash
+```bash
 pnpm dev
 ```
 

@@ -12,6 +12,7 @@ export interface Session {
 export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
+  isInitialized: boolean;
   signup: (email: string, password: string) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   restoreSession: () => Promise<void>;

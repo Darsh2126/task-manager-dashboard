@@ -5,16 +5,16 @@ import {
   createUser,
   getSession,
   getUserByEmail,
+  getUserById,
   saveSession,
 } from "@/services/auth/auth-db-service";
 
 import type { User, AuthState } from "@/types/auth";
-import { toast } from "sonner";
-
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
+  isInitialized: false,
 
   signup: async (email, password) => {
     const existingUser = await getUserByEmail(email);
@@ -31,7 +31,6 @@ export const useAuthStore = create<AuthState>((set) => ({
     };
 
     await createUser(user);
-
     await saveSession({
       userId: user.id,
     });
@@ -46,7 +45,6 @@ export const useAuthStore = create<AuthState>((set) => ({
     const user = await getUserByEmail(email);
 
     if (!user || user.password !== password) {
-      console.log(">>>in")
       throw new Error("Invalid email or password");
     }
 
@@ -61,25 +59,29 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   restoreSession: async () => {
-    const session = await getSession();
+    try {
+      const session = await getSession();
 
-    if (!session) {
-      return;
+      if (!session) {
+        return;
+      }
+
+      const user = await getUserById(session.userId);
+
+      if (!user) {
+        await clearSession();
+        return;
+      }
+
+      set({
+        user,
+        isAuthenticated: true,
+      });
+    } finally {
+      set({
+        isInitialized: true,
+      });
     }
-
-    const user = await getUserByEmail(
-      session.userId,
-    );
-
-    if (!user) {
-      await clearSession();
-      return;
-    }
-
-    set({
-      user,
-      isAuthenticated: true,
-    });
   },
 
   logout: async () => {
