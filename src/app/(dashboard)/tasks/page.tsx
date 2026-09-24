@@ -1,7 +1,8 @@
 "use client";
 
 import { withAuth } from "@/features/auth/with-auth";
+import TasksDashboard from "@/features/tasks/task-dashboard";
 
-const TasksPage = () => <div>Tasks Dashboard</div>;
+const TasksPage = () => <TasksDashboard />;
 
 export default withAuth(TasksPage);
