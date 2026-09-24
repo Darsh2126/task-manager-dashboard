@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarDays, MoreVertical } from "lucide-react";
+import { CalendarDays, GripVertical, MoreVertical } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -52,13 +52,22 @@ const TaskCard = ({ task }: TaskCardProps) => {
           transform: CSS.Transform.toString(transform),
           transition,
         }}
-        {...attributes}
-        {...listeners}
-        className="min-w-0 max-w-full cursor-grab overflow-hidden rounded-lg border bg-background p-4 shadow-sm active:cursor-grabbing"
+        className="min-w-0 max-w-full overflow-hidden rounded-lg border bg-background p-4 shadow-sm"
       >
         <div className="min-w-0 space-y-3">
           <div className="flex items-start justify-between gap-2">
-            <h3 className="min-w-0 font-medium">{task.title}</h3>
+            <div className="flex min-w-0 items-start gap-2">
+              <button
+                type="button"
+                {...attributes}
+                {...listeners}
+                className="mt-0.5 shrink-0 cursor-grab touch-none text-muted-foreground active:cursor-grabbing"
+                aria-label="Drag task"
+              >
+                <GripVertical className="size-4" />
+              </button>
+              <h3 className="min-w-0 font-medium">{task.title}</h3>
+            </div>
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Button type="button" variant="ghost" size="icon">

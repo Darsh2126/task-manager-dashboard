@@ -3,7 +3,7 @@
 import {
   DndContext,
   DragEndEvent,
-  closestCorners,
+  closestCenter,
 } from "@dnd-kit/core";
 import { useTaskStore } from "@/store/task/task-store";
 import { TaskStatus } from "@/lib/enums/tasks";
@@ -12,6 +12,7 @@ import TaskColumn from "@/features/tasks/task-column";
 const TaskBoard = () => {
   const tasks = useTaskStore((state) => state.tasks);
   const reorderTasks = useTaskStore((state) => state.reorderTasks);
+  const moveTaskToColumn = useTaskStore((state) => state.moveTaskToColumn);
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
@@ -20,11 +21,26 @@ const TaskBoard = () => {
       return;
     }
 
-    await reorderTasks(String(active.id), String(over.id));
+    const overTask = tasks.find((task) => task.id === over.id);
+
+    if (overTask) {
+      await reorderTasks(String(active.id), overTask.id);
+      return;
+    }
+
+    const destinationStatus = Object.values(TaskStatus).find(
+      (status) => status === over.id,
+    );
+
+    if (!destinationStatus) {
+      return;
+    }
+
+    await moveTaskToColumn(String(active.id), destinationStatus);
   };
 
   return (
-    <DndContext collisionDetection={closestCorners} onDragEnd={handleDragEnd}>
+    <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <div className="grid gap-4 md:grid-cols-3">
         <TaskColumn
           title={TaskStatus.TODO}

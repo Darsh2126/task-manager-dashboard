@@ -94,44 +94,158 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       return;
     }
 
-    if (activeTask.status !== overTask.status) {
-      return;
-    }
-
-    const columnTasks = currentTasks
+    const sourceTasks = currentTasks
       .filter((task) => task.status === activeTask.status)
       .sort((a, b) => a.position - b.position);
 
-    const oldIndex = columnTasks.findIndex((task) => task.id === activeId);
-    const newIndex = columnTasks.findIndex((task) => task.id === overId);
+    const destinationStatus = overTask.status;
 
-    if (oldIndex === newIndex) {
+    const destinationTasks = currentTasks
+      .filter((task) => task.status === destinationStatus)
+      .sort((a, b) => a.position - b.position);
+
+    if (activeTask.status === destinationStatus) {
+      const oldIndex = sourceTasks.findIndex(
+        (task) => task.id === activeId,
+      );
+      const newIndex = sourceTasks.findIndex(
+        (task) => task.id === overId,
+      );
+
+      if (oldIndex === newIndex) {
+        return;
+      }
+
+      const reorderedTasks = [...sourceTasks];
+      const [movedTask] = reorderedTasks.splice(oldIndex, 1);
+
+      reorderedTasks.splice(newIndex, 0, movedTask);
+
+      const updatedTasks = reorderedTasks.map((task, index) => ({
+        ...task,
+        position: index,
+        updatedAt: new Date().toISOString(),
+      }));
+
+      const nextTasks = currentTasks.map((task) => {
+        const updatedTask = updatedTasks.find(
+          (item) => item.id === task.id,
+        );
+
+        return updatedTask ?? task;
+      });
+
+      set({ tasks: nextTasks });
+
+      try {
+        await updateTasksService(updatedTasks);
+      } catch (error) {
+        set({ tasks: currentTasks });
+        throw error;
+      }
+
       return;
     }
 
-    const reorderedTasks = [...columnTasks];
-    const [movedTask] = reorderedTasks.splice(oldIndex, 1);
+    const updatedSourceTasks = sourceTasks
+      .filter((task) => task.id !== activeId)
+      .map((task, index) => ({
+        ...task,
+        position: index,
+        updatedAt: new Date().toISOString(),
+      }));
 
-    reorderedTasks.splice(newIndex, 0, movedTask);
+    const destinationIndex = destinationTasks.findIndex(
+      (task) => task.id === overId,
+    );
 
-    const updatedColumnTasks = reorderedTasks.map((task, index) => ({
-      ...task,
-      position: index,
-      updatedAt: new Date().toISOString(),
-    }));
+    const movedTask = {
+      ...activeTask,
+      status: destinationStatus,
+    };
 
-    const updatedTasks = currentTasks.map((task) => {
-      const updatedTask = updatedColumnTasks.find(
+    const nextDestinationTasks = [...destinationTasks];
+
+    nextDestinationTasks.splice(destinationIndex, 0, movedTask);
+
+    const updatedDestinationTasks = nextDestinationTasks.map(
+      (task, index) => ({
+        ...task,
+        position: index,
+        updatedAt: new Date().toISOString(),
+      }),
+    );
+
+    const changedTasks = [
+      ...updatedSourceTasks,
+      ...updatedDestinationTasks,
+    ];
+
+    const nextTasks = currentTasks.map((task) => {
+      const updatedTask = changedTasks.find(
         (item) => item.id === task.id,
       );
 
       return updatedTask ?? task;
     });
 
-    set({ tasks: updatedTasks });
+    set({ tasks: nextTasks });
 
     try {
-      await updateTasksService(updatedColumnTasks);
+      await updateTasksService(changedTasks);
+    } catch (error) {
+      set({ tasks: currentTasks });
+      throw error;
+    }
+  },
+
+  moveTaskToColumn: async (taskId, status) => {
+    const currentTasks = get().tasks;
+
+    const task = currentTasks.find((item) => item.id === taskId);
+
+    if (!task || task.status === status) {
+      return;
+    }
+
+    const position = currentTasks.filter(
+      (item) => item.status === status,
+    ).length;
+
+    const updatedTask = {
+      ...task,
+      status,
+      position,
+      updatedAt: new Date().toISOString(),
+    };
+
+    const updatedSourceTasks = currentTasks
+      .filter((item) => item.status === task.status && item.id !== taskId)
+      .map((item, index) => ({
+        ...item,
+        position: index,
+        updatedAt: new Date().toISOString(),
+      }));
+
+    const nextTasks = currentTasks.map((item) => {
+      if (item.id === taskId) {
+        return updatedTask;
+      }
+
+      const updatedSourceTask = updatedSourceTasks.find(
+        (sourceTask) => sourceTask.id === item.id,
+      );
+
+      return updatedSourceTask ?? item;
+    });
+
+    set({ tasks: nextTasks });
+
+    try {
+      await updateTasksService([
+        updatedTask,
+        ...updatedSourceTasks,
+      ]);
     } catch (error) {
       set({ tasks: currentTasks });
       throw error;

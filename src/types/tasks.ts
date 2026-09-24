@@ -31,6 +31,10 @@ export interface TaskState {
   updateTask: (task: Task) => Promise<void>;
   deleteTask: (taskId: string) => Promise<void>;
   reorderTasks: (activeId: string, overId: string) => Promise<void>;
+  moveTaskToColumn: (
+    taskId: string,
+    status: TaskStatus,
+  ) => Promise<void>;
 }
 
 export interface TaskCardProps {
