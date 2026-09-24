@@ -25,7 +25,6 @@ import DeleteTaskDialog from "./delete-task-dialog";
 const TaskCard = ({ task }: TaskCardProps) => {
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-
   const {
     attributes,
     listeners,
@@ -35,13 +34,10 @@ const TaskCard = ({ task }: TaskCardProps) => {
   } = useSortable({
     id: task.id,
   });
-
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
   const dueDate = new Date(task.dueDate);
   dueDate.setHours(0, 0, 0, 0);
-
   const isOverdue = dueDate < today && task.status !== "Done";
 
   return (
@@ -88,8 +84,8 @@ const TaskCard = ({ task }: TaskCardProps) => {
             </DropdownMenu>
           </div>
           <Tooltip>
-            <TooltipTrigger>
-              <p className="max-w-full cursor-pointer truncate text-sm text-muted-foreground">
+            <TooltipTrigger className="block w-full min-w-0 text-left">
+              <p className="w-full truncate text-sm text-muted-foreground cursor-pointer">
                 {task.description}
               </p>
             </TooltipTrigger>
@@ -104,7 +100,13 @@ const TaskCard = ({ task }: TaskCardProps) => {
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <div className="flex min-w-0 items-center gap-1">
               <CalendarDays className="size-3.5 shrink-0" />
-              <span>{dueDate.toLocaleDateString()}</span>
+              <span>
+                {dueDate.toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </span>
             </div>
             {isOverdue && <Badge variant="destructive">Overdue</Badge>}
           </div>

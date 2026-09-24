@@ -61,7 +61,7 @@ const SignupForm = () => {
                   {...field}
                   id="signup-email"
                   type="email"
-                  placeholder="you@example.com"
+                  placeholder="user@example.com"
                   aria-invalid={fieldState.invalid}
                 />
 
