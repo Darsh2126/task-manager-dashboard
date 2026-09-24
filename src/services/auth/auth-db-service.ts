@@ -1,44 +1,9 @@
 import {
-  DB_NAME,
-  DB_VERSION,
   SESSION_STORE,
   USERS_STORE,
-} from "@/lib/constants/auth-constants";
+} from "@/lib/constants/database-constants";
 import { Session, User } from "@/types/auth";
-
-const openDatabase = (): Promise<IDBDatabase> => {
-  return new Promise((resolve, reject) => {
-    const request = indexedDB.open(DB_NAME, DB_VERSION);
-
-    request.onupgradeneeded = () => {
-      const db = request.result;
-
-      if (!db.objectStoreNames.contains(USERS_STORE)) {
-        const usersStore = db.createObjectStore(USERS_STORE, {
-          keyPath: "id",
-        });
-
-        usersStore.createIndex("email", "email", {
-          unique: true,
-        });
-      }
-
-      if (!db.objectStoreNames.contains(SESSION_STORE)) {
-        db.createObjectStore(SESSION_STORE, {
-          keyPath: "id",
-        });
-      }
-    };
-
-    request.onsuccess = () => {
-      resolve(request.result);
-    };
-
-    request.onerror = () => {
-      reject(request.error);
-    };
-  });
-};
+import { openDatabase } from "../database/database-service";
 
 export const createUser = async (user: User): Promise<void> => {
   const db = await openDatabase();
