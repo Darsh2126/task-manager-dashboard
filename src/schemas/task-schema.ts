@@ -16,6 +16,7 @@ export const taskSchema = z.object({
   dueDate: z.date({
     error: "Due date is required",
   }),
+  position: z.number().optional(),
 });
 
 export type TaskFormData = z.infer<typeof taskSchema>;

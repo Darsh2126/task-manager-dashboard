@@ -57,3 +57,18 @@ export const deleteTaskService = async (taskId: string): Promise<void> => {
   });
 };
 
+export const updateTasksService = async (tasks: Task[]): Promise<void> => {
+  const db = await openDatabase();
+
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(TASKS_STORE, "readwrite");
+    const store = transaction.objectStore(TASKS_STORE);
+
+    tasks.forEach((task) => {
+      store.put(task);
+    });
+
+    transaction.oncomplete = () => resolve();
+    transaction.onerror = () => reject(transaction.error);
+  });
+};

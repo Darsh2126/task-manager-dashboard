@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { CalendarDays, MoreVertical } from "lucide-react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,6 +26,16 @@ const TaskCard = ({ task }: TaskCardProps) => {
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+  } = useSortable({
+    id: task.id,
+  });
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -34,7 +46,16 @@ const TaskCard = ({ task }: TaskCardProps) => {
 
   return (
     <>
-      <article className="min-w-0 max-w-full overflow-hidden rounded-lg border bg-background p-4 shadow-sm">
+      <article
+        ref={setNodeRef}
+        style={{
+          transform: CSS.Transform.toString(transform),
+          transition,
+        }}
+        {...attributes}
+        {...listeners}
+        className="min-w-0 max-w-full cursor-grab overflow-hidden rounded-lg border bg-background p-4 shadow-sm active:cursor-grabbing"
+      >
         <div className="min-w-0 space-y-3">
           <div className="flex items-start justify-between gap-2">
             <h3 className="min-w-0 font-medium">{task.title}</h3>
@@ -48,7 +69,10 @@ const TaskCard = ({ task }: TaskCardProps) => {
                 <DropdownMenuItem onClick={() => setIsUpdateOpen(true)}>
                   Edit Task
                 </DropdownMenuItem>
-                <DropdownMenuItem className="text-destructive" onClick={() => setIsDeleteOpen(true)}>
+                <DropdownMenuItem
+                  className="text-destructive"
+                  onClick={() => setIsDeleteOpen(true)}
+                >
                   Delete Task
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -82,7 +106,12 @@ const TaskCard = ({ task }: TaskCardProps) => {
         open={isUpdateOpen}
         onOpenChange={setIsUpdateOpen}
       />
-      <DeleteTaskDialog onOpenChange={setIsDeleteOpen} open={isDeleteOpen} taskId={task.id} title={task.title} />
+      <DeleteTaskDialog
+        onOpenChange={setIsDeleteOpen}
+        open={isDeleteOpen}
+        taskId={task.id}
+        title={task.title}
+      />
     </>
   );
 };

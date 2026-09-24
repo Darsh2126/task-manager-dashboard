@@ -41,11 +41,6 @@ const UpdateTaskDialog = ({ task, open, onOpenChange }: UpdateTaskDialogProps) =
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger>
-        <Button type="button" variant="ghost" className="w-full justify-start">
-          Edit Task
-        </Button>
-      </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Update Task</DialogTitle>

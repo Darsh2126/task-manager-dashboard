@@ -20,15 +20,17 @@ export interface Task {
   dueDate: Date;
   createdAt: string;
   updatedAt: string;
+  position: number;
 }
 
 export interface TaskState {
   tasks: Task[];
-  createTask: (task: Omit<Task, "id" | "createdAt" | "updatedAt">) => Promise<void>;
+  createTask: (task: Omit<Task, "id" | "createdAt" | "updatedAt" | "position">) => Promise<void>;
   loadTasks: (userId: string) => Promise<void>;
   isCreating: boolean;
   updateTask: (task: Task) => Promise<void>;
   deleteTask: (taskId: string) => Promise<void>;
+  reorderTasks: (activeId: string, overId: string) => Promise<void>;
 }
 
 export interface TaskCardProps {
