@@ -48,12 +48,10 @@ const SignupForm = () => {
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-semibold">Create an account</h1>
-
           <p className="mt-2 text-sm text-muted-foreground">
             Sign up to manage your tasks
           </p>
         </div>
-
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
           <Controller
             name="email"
@@ -61,7 +59,6 @@ const SignupForm = () => {
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="signup-email">Email</FieldLabel>
-
                 <Input
                   {...field}
                   id="signup-email"
@@ -69,56 +66,72 @@ const SignupForm = () => {
                   placeholder="user@example.com"
                   aria-invalid={fieldState.invalid}
                 />
-
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
                 )}
               </Field>
             )}
           />
-
           <Controller
             name="password"
             control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="signup-password">Password</FieldLabel>
+            render={({ field, fieldState }) => {
+              const password = field.value ?? "";
+              const hasMinLength = password.length >= 8;
+              const hasUppercase = /[A-Z]/.test(password);
+              const hasLowercase = /[a-z]/.test(password);
+              const hasNumber = /\d/.test(password);
 
-                <div className="relative">
-                  <Input
-                    {...field}
-                    id="signup-password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    aria-invalid={fieldState.invalid}
-                    className="pr-10"
-                  />
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setShowPassword((current) => !current)
-                    }
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    aria-label={
-                      showPassword ? "Hide password" : "Show password"
-                    }
-                  >
-                    {showPassword ? (
-                      <EyeOff className="size-4" />
-                    ) : (
-                      <Eye className="size-4" />
-                    )}
-                  </button>
-                </div>
-
-                {fieldState.invalid && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
+              return (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="signup-password">Password</FieldLabel>
+                  <div className="relative">
+                    <Input
+                      {...field}
+                      id="signup-password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      aria-invalid={fieldState.invalid}
+                      className="pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setShowPassword((current) => !current)
+                      }
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      aria-label={
+                        showPassword ? "Hide password" : "Show password"
+                      }
+                    >
+                      {showPassword ? (
+                        <EyeOff className="size-4" />
+                      ) : (
+                        <Eye className="size-4" />
+                      )}
+                    </button>
+                  </div>
+                  <div className="space-y-1 text-xs text-muted-foreground">
+                    <p className={hasMinLength ? "text-green-600" : ""}>
+                      ✓ At least 8 characters
+                    </p>
+                    <p className={hasUppercase ? "text-green-600" : ""}>
+                      ✓ At least 1 uppercase letter
+                    </p>
+                    <p className={hasLowercase ? "text-green-600" : ""}>
+                      ✓ At least 1 lowercase letter
+                    </p>
+                    <p className={hasNumber ? "text-green-600" : ""}>
+                      ✓ At least 1 number
+                    </p>
+                  </div>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              );
+            }}
           />
-
           <button
             type="submit"
             disabled={form.formState.isSubmitting}
@@ -127,7 +140,6 @@ const SignupForm = () => {
             {form.formState.isSubmitting ? "Creating account..." : "Sign up"}
           </button>
         </form>
-
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Already have an account?{" "}
           <a href="/login" className="font-medium text-foreground">

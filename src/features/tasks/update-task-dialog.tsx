@@ -11,14 +11,17 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import TaskForm from "@/features/tasks/task-form";
-import { useTaskStore } from "@/store/task/task-store";
 import { TaskFormData } from "@/schemas/task-schema";
-import type { Task, UpdateTaskDialogProps } from "@/types/tasks";
+import { useTaskStore } from "@/store/task/task-store";
+import type { UpdateTaskDialogProps } from "@/types/tasks";
 
-const UpdateTaskDialog = ({ task, open, onOpenChange }: UpdateTaskDialogProps) => {
+const UpdateTaskDialog = ({
+  task,
+  open,
+  onOpenChange,
+}: UpdateTaskDialogProps) => {
   const updateTask = useTaskStore((state) => state.updateTask);
   const [isUpdating, setIsUpdating] = useState(false);
 
@@ -32,7 +35,6 @@ const UpdateTaskDialog = ({ task, open, onOpenChange }: UpdateTaskDialogProps) =
         ...task,
         ...data,
       });
-
     } finally {
       setIsUpdating(false);
       onOpenChange(false);
@@ -41,7 +43,7 @@ const UpdateTaskDialog = ({ task, open, onOpenChange }: UpdateTaskDialogProps) =
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Update Task</DialogTitle>
           <DialogDescription>

@@ -47,7 +47,7 @@ const CreateTaskDialog = ({ formId }: CreateTaskDialogProps) => {
       <DialogTrigger>
         <Button>Create Task</Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Create Task</DialogTitle>
           <DialogDescription>
@@ -67,7 +67,11 @@ const CreateTaskDialog = ({ formId }: CreateTaskDialogProps) => {
           >
             Cancel
           </Button>
-          <Button type="submit" form={formId} disabled={isCreating}>
+          <Button
+            type="submit"
+            form={formId}
+            disabled={isCreating}
+          >
             {isCreating && <Loader2 className="animate-spin" />}
             {isCreating ? "Creating..." : "Create Task"}
           </Button>

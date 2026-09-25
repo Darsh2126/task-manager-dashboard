@@ -76,7 +76,7 @@ const TaskForm = ({
         render={({ field, fieldState }) => (
           <Field>
             <FieldLabel htmlFor="task-description">
-              Description
+              Description (optional)
             </FieldLabel>
             <Textarea
               {...field}
