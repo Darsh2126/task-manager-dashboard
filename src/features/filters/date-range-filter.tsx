@@ -19,7 +19,7 @@ const DateRangeFilter = ({
   return (
     <Popover>
       <PopoverTrigger>
-        <Button type="button" variant="outline">
+        <Button className="cursor-pointer" type="button" variant="outline">
           <CalendarIcon />
           {from && to
             ? `${from.toLocaleDateString()} - ${to.toLocaleDateString()}`

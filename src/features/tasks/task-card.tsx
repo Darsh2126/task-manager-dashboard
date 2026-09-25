@@ -66,16 +66,16 @@ const TaskCard = ({ task }: TaskCardProps) => {
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <Button type="button" variant="ghost" size="icon">
+                <Button className="cursor-pointer" type="button" variant="ghost" size="icon">
                   <MoreVertical />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setIsUpdateOpen(true)}>
+                <DropdownMenuItem className="cursor-pointer" onClick={() => setIsUpdateOpen(true)}>
                   Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  className="text-destructive"
+                  className="text-destructive cursor-pointer"
                   onClick={() => setIsDeleteOpen(true)}
                 >
                   Delete

@@ -102,7 +102,7 @@ const LoginForm = () => {
           <Button
             type="submit"
             disabled={form.formState.isSubmitting}
-            className="w-full"
+            className="w-full cursor-pointer"
           >
             {form.formState.isSubmitting ? "Logging in..." : "Log in"}
           </Button>

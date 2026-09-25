@@ -49,6 +49,7 @@ const DeleteTaskDialog = ({
         </DialogHeader>
         <DialogFooter>
           <Button
+            className="cursor-pointer"
             type="button"
             variant="outline"
             onClick={() => onOpenChange(false)}
@@ -57,6 +58,7 @@ const DeleteTaskDialog = ({
             Cancel
           </Button>
           <Button
+            className="cursor-pointer"
             type="button"
             variant="destructive"
             onClick={handleDelete}

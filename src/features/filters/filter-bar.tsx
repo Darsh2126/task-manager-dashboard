@@ -58,6 +58,7 @@ const FilterBar = () => {
       />
       {hasFilters && (
         <Button
+          className="cursor-pointer"
           type="button"
           variant="ghost"
           onClick={clearFilters}

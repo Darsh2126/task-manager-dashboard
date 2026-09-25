@@ -65,6 +65,7 @@ const UpdateTaskDialog = ({
         </div>
         <DialogFooter className="shrink-0">
           <Button
+            className="cursor-pointer"
             type="button"
             variant="outline"
             onClick={() => onOpenChange(false)}
@@ -72,7 +73,7 @@ const UpdateTaskDialog = ({
           >
             Cancel
           </Button>
-          <Button type="submit" form={formId} disabled={isUpdating}>
+          <Button className="cursor-pointer" type="submit" form={formId} disabled={isUpdating}>
             {isUpdating && <Loader2 className="animate-spin" />}
             {isUpdating ? "Updating..." : "Update Task"}
           </Button>

@@ -45,7 +45,7 @@ const CreateTaskDialog = ({ formId }: CreateTaskDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button>Create Task</Button>
+        <Button className="cursor-pointer">Create Task</Button>
       </DialogTrigger>
       <DialogContent className="flex max-h-[calc(100vh-2rem)] flex-col overflow-hidden sm:max-w-lg">
         <DialogHeader className="shrink-0">
