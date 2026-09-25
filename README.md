@@ -1,4 +1,4 @@
-# Task Manager Dashboard
+# Task Manager Dashboard - https://task-manager-dashboard-kappa.vercel.app/
 
 A task management dashboard built as a React practical assignment.
 
@@ -32,7 +32,7 @@ implementation.
 The structure shown below represents the current stage of the project
 and is not treated as a fixed final structure.
 
-### Current Structure
+### Folder Structure
 
 ```text
 src/
@@ -42,28 +42,48 @@ src/
 │   │   │   └── page.tsx
 │   │   └── sign-up/
 │   │       └── page.tsx
-│   │
 │   ├── (dashboard)/
 │   │   └── tasks/
 │   │       └── page.tsx
-│   │
-│   ├── layout.tsx
 │   ├── globals.css
+│   ├── layout.tsx
 │   └── page.tsx
 │
 ├── components/
 │   ├── layout/
+│   │   ├── header.tsx
+│   │   ├── logout-button.tsx
+│   │   └── sidebar.tsx
 │   └── ui/
 │
 ├── features/
 │   ├── auth/
+│   ├── filters/
 │   └── tasks/
 │
 ├── hooks/
+│
 ├── lib/
+│   ├── enums/
+│   └── shared/
+│
 ├── schemas/
+│
+├── services/
+│   ├── auth/
+│   └── task/
+│
 ├── store/
-└── types/
+│   ├── auth/
+│   └── task/
+│
+├── types/
+│
+└── __tests__/
+    ├── auth/
+    ├── shared/
+    ├── store/
+    └── tasks/
 ```
 
 Will provide the final structure once it fully generated.
@@ -114,7 +134,7 @@ pnpm install
 Run the development server:
 
 ```bash
-pnpm dev
+pnpm run dev
 ```
 
 The application can then be opened using the local URL provided by
@@ -158,3 +178,30 @@ Feature-specific components are grouped under `features`.
 
 This keeps task-related and authentication-related UI close to their
 respective domains while shared UI remains reusable.
+
+### Versioning Desicions
+
+### Version 0.1.x
+1. Initial Project Setup added
+
+### Version 0.2.x
+1. Added Authentication with Protected Routes functionality
+
+### Version 0.3.x
+1. Created Task Dashboard Layout
+2. Added Task Board CRUD management
+
+### Version 0.4.x
+1. Implemented Drag and Drop functionality and its layout.
+- The reason behind implementing DND over sorting and other part is because the DND is occuring over Cards and the whole
+filtering and sorting is happening with Data
+2. Added Column Based and Cross Column DND functionality
+
+### Version 0.5.x
+1. Added Sorting, Filtering and Pagination functionality
+2. Done some other UI enhancements after implementation
+
+### Version 0.6.x
+1. Added JEST testing functionality
+2. Updating README files.
+3. Resolved IndexDB related bug in production build.

@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -11,6 +13,7 @@ import { useAuthStore } from "@/store/auth/auth-store";
 
 const SignupForm = () => {
   const signup = useAuthStore((state) => state.signup);
+  const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
@@ -34,7 +37,9 @@ const SignupForm = () => {
         return;
       }
 
-      toast.error("Something went wrong");
+      toast.error(
+        error instanceof Error ? error.message : "Something went wrong",
+      );
     }
   };
 
@@ -79,13 +84,33 @@ const SignupForm = () => {
               <Field data-invalid={fieldState.invalid}>
                 <FieldLabel htmlFor="signup-password">Password</FieldLabel>
 
-                <Input
-                  {...field}
-                  id="signup-password"
-                  type="password"
-                  placeholder="Enter your password"
-                  aria-invalid={fieldState.invalid}
-                />
+                <div className="relative">
+                  <Input
+                    {...field}
+                    id="signup-password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    aria-invalid={fieldState.invalid}
+                    className="pr-10"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setShowPassword((current) => !current)
+                    }
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                  >
+                    {showPassword ? (
+                      <EyeOff className="size-4" />
+                    ) : (
+                      <Eye className="size-4" />
+                    )}
+                  </button>
+                </div>
 
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />

@@ -12,11 +12,24 @@ export const openDatabase = (): Promise<IDBDatabase> =>
 
     request.onupgradeneeded = () => {
       const db = request.result;
+      const transaction = request.transaction;
 
       if (!db.objectStoreNames.contains(USERS_STORE)) {
-        db.createObjectStore(USERS_STORE, {
+        const store = db.createObjectStore(USERS_STORE, {
           keyPath: "id",
         });
+
+        store.createIndex("email", "email", {
+          unique: true,
+        });
+      } else {
+        const store = transaction?.objectStore(USERS_STORE);
+
+        if (store && !store.indexNames.contains("email")) {
+          store.createIndex("email", "email", {
+            unique: true,
+          });
+        }
       }
 
       if (!db.objectStoreNames.contains(SESSION_STORE)) {
