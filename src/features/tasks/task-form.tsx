@@ -164,7 +164,11 @@ const TaskForm = ({
                 >
                   <CalendarIcon />
                   {field.value
-                    ? field.value.toLocaleDateString()
+                    ? field.value.toLocaleDateString("en-GB", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })
                     : "Select a due date"}
                 </Button>
               </PopoverTrigger>

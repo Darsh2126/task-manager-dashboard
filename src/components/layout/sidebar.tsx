@@ -5,9 +5,6 @@ const Sidebar = () => (
     <div className="flex h-16 items-center border-b px-6">
       <h1 className="text-xl font-semibold">Task Manager</h1>
     </div>
-    <div className="mt-auto p-6">
-      <LogoutButton />
-    </div>
   </aside>
 );
 
