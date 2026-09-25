@@ -1,4 +1,4 @@
-import { DB_NAME, TASK_DB_VERSION, TASKS_STORE } from "@/lib/constants/database-constants";
+import { TASKS_STORE } from "@/lib/constants/database-constants";
 import { Task } from "@/types/tasks";
 import { openDatabase } from "../database/database-service";
 
