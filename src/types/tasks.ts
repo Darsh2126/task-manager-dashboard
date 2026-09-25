@@ -4,6 +4,7 @@ import { TaskFormData } from "@/schemas/task-schema";
 export interface TaskColumnProps {
   title: string;
   tasks: Task[];
+  pageSize: number;
 }
 
 export interface CreateTaskDialogProps {
@@ -62,6 +63,7 @@ export interface DeleteTaskDialogProps {
 
 export interface TaskBoardProps {
   tasks: Task[];
+  pageSize: number;
 }
 
 export interface DateRangeFilterProps {

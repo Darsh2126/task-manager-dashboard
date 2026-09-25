@@ -3,24 +3,19 @@
 import { useEffect, useState } from "react";
 
 import CreateTaskDialog from "./create-task-dialog";
-import TaskBoard from "@/features/tasks/task-board";
-import SearchInput from "@/features/filters/search-input";
 import FilterBar from "@/features/filters/filter-bar";
+import SearchInput from "@/features/filters/search-input";
 import SortSelect from "@/features/filters/sort-select";
+import TaskBoard from "@/features/tasks/task-board";
 import useDebounce from "@/hooks/use-debounce";
 import useFilters from "@/hooks/use-filters";
+import { SORT_DIRECTION, SORT_OPTION } from "@/lib/enums/filters";
+import { TaskPriority } from "@/lib/enums/tasks";
 import { searchItems } from "@/lib/shared/filter";
 import { sortItems } from "@/lib/shared/sort";
-import {
-  SORT_DIRECTION,
-  SORT_OPTION,
-} from "@/lib/enums/filters";
-import { TaskPriority } from "@/lib/enums/tasks";
 import { useAuthStore } from "@/store/auth/auth-store";
 import { useTaskStore } from "@/store/task/task-store";
-import { paginateItems } from "@/lib/shared/pagination";
 import PageSizeSelect from "../filters/page-size-select";
-import Pagination from "../filters/pagination";
 
 const TasksDashboard = () => {
   const user = useAuthStore((state) => state.user);
@@ -33,7 +28,6 @@ const TasksDashboard = () => {
   const [sortOption, setSortOption] = useState<SORT_OPTION>(
     SORT_OPTION.NONE,
   );
-  const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
   const debouncedSearch = useDebounce(search, 300);
@@ -69,12 +63,7 @@ const TasksDashboard = () => {
     const matchesFrom = !fromDate || taskDate >= fromDate;
     const matchesTo = !toDate || taskDate <= toDate;
 
-    return (
-      matchesStatus &&
-      matchesPriority &&
-      matchesFrom &&
-      matchesTo
-    );
+    return matchesStatus && matchesPriority && matchesFrom && matchesTo;
   });
 
   const sortedTasks = sortItems(
@@ -100,10 +89,7 @@ const TasksDashboard = () => {
           [TaskPriority.HIGH]: 3,
         };
 
-        return (
-          priorityOrder[first.priority] -
-          priorityOrder[second.priority]
-        );
+        return priorityOrder[first.priority] - priorityOrder[second.priority];
       }
 
       return 0;
@@ -114,8 +100,6 @@ const TasksDashboard = () => {
       : SORT_DIRECTION.ASC,
   );
 
-  const paginatedTasks = paginateItems(sortedTasks, page, pageSize);
-
   const handleSortChange = (value: string | null) => {
     if (!value) {
       setSortOption(SORT_OPTION.NONE);
@@ -125,13 +109,9 @@ const TasksDashboard = () => {
     setSortOption(value as SORT_OPTION);
   };
 
-  useEffect(() => {
-    setPage(1);
-  }, [debouncedSearch, status, priority, from, to, sortOption, pageSize]);
-
   return (
-    <div className="flex flex-1 flex-col gap-6 p-6">
-      <div className="flex items-center justify-between">
+    <div className="flex min-h-full flex-col gap-6 p-6 md:h-full md:min-h-0">
+      <div className="flex shrink-0 items-center justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">
             Tasks Dashboard
@@ -142,27 +122,18 @@ const TasksDashboard = () => {
         </div>
         <CreateTaskDialog formId="create-task-form" />
       </div>
-      <div className="flex flex-wrap items-center justify-between gap-3">
+      <div className="flex shrink-0 flex-wrap items-center justify-between gap-3">
         <SearchInput value={search} onChange={setSearch} />
         <div className="flex flex-wrap items-center gap-2">
           <FilterBar />
-          <SortSelect
-            value={sortOption}
-            onChange={handleSortChange}
-          />
+          <SortSelect value={sortOption} onChange={handleSortChange} />
         </div>
       </div>
-      <TaskBoard tasks={paginatedTasks.items} />
-      <div className="flex flex-wrap items-center justify-end gap-3">
-        <PageSizeSelect
-          value={pageSize}
-          onChange={setPageSize}
-        />
-        <Pagination
-          currentPage={page}
-          totalPages={paginatedTasks.totalPages}
-          onPageChange={setPage}
-        />
+      <div className="md:min-h-0 md:flex-1">
+        <TaskBoard tasks={sortedTasks} pageSize={pageSize} />
+      </div>
+      <div className="flex shrink-0 justify-end">
+        <PageSizeSelect value={pageSize} onChange={setPageSize} />
       </div>
     </div>
   );

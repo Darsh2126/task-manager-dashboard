@@ -205,3 +205,6 @@ filtering and sorting is happening with Data
 1. Added JEST testing functionality
 2. Updating README files.
 3. Resolved IndexDB related bug in production build.
+
+### Version 1.1.x
+1. Update the Task Pagination logic

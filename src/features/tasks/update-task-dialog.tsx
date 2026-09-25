@@ -43,25 +43,27 @@ const UpdateTaskDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
-        <DialogHeader>
+      <DialogContent className="flex max-h-[calc(100vh-2rem)] flex-col overflow-hidden sm:max-w-lg">
+        <DialogHeader className="shrink-0">
           <DialogTitle>Update Task</DialogTitle>
           <DialogDescription>
             Update the details of your task.
           </DialogDescription>
         </DialogHeader>
-        <TaskForm
-          formId={formId}
-          defaultValues={{
-            title: task.title,
-            description: task.description ?? "",
-            status: task.status,
-            priority: task.priority,
-            dueDate: task.dueDate,
-          }}
-          onSubmit={handleSubmit}
-        />
-        <DialogFooter>
+        <div className="min-h-0 flex-1 overflow-y-auto">
+          <TaskForm
+            formId={formId}
+            defaultValues={{
+              title: task.title,
+              description: task.description ?? "",
+              status: task.status,
+              priority: task.priority,
+              dueDate: task.dueDate,
+            }}
+            onSubmit={handleSubmit}
+          />
+        </div>
+        <DialogFooter className="shrink-0">
           <Button
             type="button"
             variant="outline"

@@ -72,13 +72,13 @@ const TaskCard = ({ task }: TaskCardProps) => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => setIsUpdateOpen(true)}>
-                  Edit Task
+                  Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   className="text-destructive"
                   onClick={() => setIsDeleteOpen(true)}
                 >
-                  Delete Task
+                  Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

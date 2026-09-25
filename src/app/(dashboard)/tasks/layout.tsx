@@ -17,7 +17,7 @@ export default function TasksLayout({
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
         <Header />
-        <main className="flex-1">
+        <main className="h-[calc(100vh-4rem)] overflow-y-auto">
           {children}
         </main>
       </div>

@@ -5,13 +5,12 @@ import {
   DragEndEvent,
   closestCenter,
 } from "@dnd-kit/core";
-import { useTaskStore } from "@/store/task/task-store";
 import { TaskStatus } from "@/lib/enums/tasks";
+import { useTaskStore } from "@/store/task/task-store";
 import TaskColumn from "@/features/tasks/task-column";
 import { TaskBoardProps } from "@/types/tasks";
 
-const TaskBoard = ({ tasks }: TaskBoardProps) => {
-
+const TaskBoard = ({ tasks, pageSize }: TaskBoardProps) => {
   const reorderTasks = useTaskStore((state) => state.reorderTasks);
   const moveTaskToColumn = useTaskStore((state) => state.moveTaskToColumn);
 
@@ -42,20 +41,23 @@ const TaskBoard = ({ tasks }: TaskBoardProps) => {
 
   return (
     <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:h-full md:min-h-0 md:grid-cols-3">
         <TaskColumn
           title={TaskStatus.TODO}
           tasks={tasks.filter((task) => task.status === TaskStatus.TODO)}
+          pageSize={pageSize}
         />
         <TaskColumn
           title={TaskStatus.IN_PROGRESS}
           tasks={tasks.filter(
             (task) => task.status === TaskStatus.IN_PROGRESS,
           )}
+          pageSize={pageSize}
         />
         <TaskColumn
           title={TaskStatus.DONE}
           tasks={tasks.filter((task) => task.status === TaskStatus.DONE)}
+          pageSize={pageSize}
         />
       </div>
     </DndContext>
