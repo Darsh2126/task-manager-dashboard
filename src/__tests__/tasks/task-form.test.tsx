@@ -1,5 +1,4 @@
-import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { fireEvent, render, screen } from "@testing-library/react";
 
 import TaskForm from "@/features/tasks/task-form";
 
@@ -14,13 +13,12 @@ describe("TaskForm", () => {
 
     expect(screen.getByLabelText("Title")).toBeInTheDocument();
     expect(screen.getByLabelText("Description")).toBeInTheDocument();
-    expect(screen.getByLabelText("Status")).toBeInTheDocument();
-    expect(screen.getByLabelText("Priority")).toBeInTheDocument();
-    expect(screen.getByLabelText("Due date")).toBeInTheDocument();
+    expect(screen.getByText("Status")).toBeInTheDocument();
+    expect(screen.getByText("Priority")).toBeInTheDocument();
+    expect(screen.getByText("Due date")).toBeInTheDocument();
   });
 
   it("shows validation error when title is empty", async () => {
-    const user = userEvent.setup();
     const onSubmit = jest.fn();
 
     render(
@@ -30,9 +28,16 @@ describe("TaskForm", () => {
       />,
     );
 
-    await user.click(screen.getByRole("button", { name: /submit/i }));
+    const form = document.getElementById("task-form");
 
-    expect(screen.getByText("Title is required")).toBeInTheDocument();
+    expect(form).toBeInTheDocument();
+
+    fireEvent.submit(form!);
+
+    expect(
+      await screen.findByText("Title is required"),
+    ).toBeInTheDocument();
+
     expect(onSubmit).not.toHaveBeenCalled();
   });
 });
