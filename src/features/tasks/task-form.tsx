@@ -188,7 +188,7 @@ const TaskForm = ({
                     field.onChange(date);
                     setOpenCalendar(false);
                   }}
-                  disabled={{ before: !isTaskDone ? new Date() : false }}
+                  disabled={isTaskDone && { before: new Date() }}
                 />
               </PopoverContent>
             </Popover>
