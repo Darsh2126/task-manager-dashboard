@@ -6,6 +6,7 @@ import { TaskStatus } from "@/lib/enums/tasks";
 
 export const useTaskStore = create<TaskState>((set, get) => ({
   tasks: [],
+  task: undefined,
   isCreating: false,
   createTask: async (taskData) => {
     set({ isCreating: true });
@@ -44,7 +45,21 @@ export const useTaskStore = create<TaskState>((set, get) => ({
       [TaskStatus.DONE]: 0,
     };
 
+
     const normalizedTasks = tasks.map((task) => {
+
+      // Will make the due task as done first
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const dueDate = new Date(task.dueDate);
+      dueDate.setHours(0, 0, 0, 0);
+
+      const isOverdue = dueDate < today && task.status !== TaskStatus.DONE;
+
+      if (isOverdue) {
+        task.status = TaskStatus.DONE
+      }
+
       const position =
         task.position ?? positionCounters[task.status];
 
@@ -59,6 +74,23 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     await updateTasksService(normalizedTasks);
 
     set({ tasks: normalizedTasks });
+  },
+
+  loadTaskById: async (userId, taskId) => {
+    const tasks = await getTasksByUserId(userId);
+
+    const positionCounters: Record<TaskStatus, number> = {
+      [TaskStatus.TODO]: 0,
+      [TaskStatus.IN_PROGRESS]: 0,
+      [TaskStatus.DONE]: 0,
+    };
+
+
+    const filterTaskById = tasks.find((data) => data.id === taskId);
+
+    // await updateTasksService(normalizedTasks);
+
+    set({ task: filterTaskById });
   },
 
   updateTask: async (task) => {

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon } from "lucide-react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -45,6 +45,14 @@ const TaskForm = ({
   });
 
   const [openCalendar, setOpenCalendar] = useState(false);
+
+  const taskStatus = form.getValues('status');
+  const isTaskDone = taskStatus === TaskStatus.DONE;
+
+  console.log('>>>isTask', isTaskDone);
+
+  //in create task, disable past date only for todo and in progress status , 
+  // if someone adds a task with status done (just for record keeping) we dont disable the past date
 
   return (
     <form
@@ -180,7 +188,7 @@ const TaskForm = ({
                     field.onChange(date);
                     setOpenCalendar(false);
                   }}
-                  disabled={{ before: new Date() }}
+                  disabled={{ before: !isTaskDone ? new Date() : false }}
                 />
               </PopoverContent>
             </Popover>

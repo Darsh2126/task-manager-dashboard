@@ -26,6 +26,7 @@ export interface Task {
 
 export interface TaskState {
   tasks: Task[];
+  task: Task | undefined;
   createTask: (task: Omit<Task, "id" | "createdAt" | "updatedAt" | "position">) => Promise<void>;
   loadTasks: (userId: string) => Promise<void>;
   isCreating: boolean;
@@ -36,6 +37,7 @@ export interface TaskState {
     taskId: string,
     status: TaskStatus,
   ) => Promise<void>;
+  loadTaskById: (userId: string, taskId: string) => Promise<void>;
 }
 
 export interface TaskCardProps {

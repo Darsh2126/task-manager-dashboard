@@ -21,6 +21,7 @@ import {
 import UpdateTaskDialog from "@/features/tasks/update-task-dialog";
 import { TaskCardProps } from "@/types/tasks";
 import DeleteTaskDialog from "./delete-task-dialog";
+import { useRouter } from "next/navigation";
 
 const TaskCard = ({ task }: TaskCardProps) => {
   const [isUpdateOpen, setIsUpdateOpen] = useState(false);
@@ -38,7 +39,14 @@ const TaskCard = ({ task }: TaskCardProps) => {
   today.setHours(0, 0, 0, 0);
   const dueDate = new Date(task.dueDate);
   dueDate.setHours(0, 0, 0, 0);
-  const isOverdue = dueDate < today && task.status !== "Done";
+  const isOverdue = dueDate < today;
+
+  const router = useRouter();
+
+  const handleViewClick = (id: string) => {
+    router.push(`tasks/${id}`);
+  }
+
 
   return (
     <>
@@ -71,6 +79,9 @@ const TaskCard = ({ task }: TaskCardProps) => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                <DropdownMenuItem className="cursor-pointer" onClick={() => handleViewClick(task.id)}>
+                  View
+                </DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer" onClick={() => setIsUpdateOpen(true)}>
                   Edit
                 </DropdownMenuItem>
@@ -108,7 +119,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
                 })}
               </span>
             </div>
-            {isOverdue && <Badge variant="destructive">Overdue</Badge>}
+            {/* {isOverdue && <Badge variant="destructive">Overdue</Badge>} */}
           </div>
         </div>
       </article>
